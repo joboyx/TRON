@@ -1,0 +1,121 @@
+<html>
+
+<head>
+
+	<title>TRON</title>
+
+	<script type="text/javascript">
+		var UP = "up";
+		var DOWN = "down";
+		var LEFT = "left";
+		var RIGHT = "right";
+	
+		var SPEED = 2;
+		var LINE_WIDTH = 3;
+		
+		var PLAYER1_COLOR = "#FF0000"; //red
+		
+		var canvas;
+		var ctx;
+		
+		var player1_x;
+		var player1_y;
+		var player1_dir;
+		
+		function init()
+		{
+			canvas = document.getElementById("canvas_main");
+			ctx = canvas.getContext("2d");
+			
+			document.addEventListener("keydown", keypress);
+			
+			// init player properties
+			player1_x = 400;
+			player1_y = 400;
+			player1_dir = LEFT;
+			
+			// start main loop
+			setInterval("draw_tron();", SPEED, false);
+		}
+		
+		var keypress = function(ev)
+		{
+			var key = ev.keyCode;
+			
+			switch(key)
+			{
+				case 87: //w - UP
+					obj("label_player1_dir").innerHTML = UP;
+					player1_dir = UP;
+					break;
+				case 83: //s - DOWN
+					obj("label_player1_dir").innerHTML = DOWN;
+					player1_dir = DOWN;
+					break;
+				case 65: //a - LEFT
+					obj("label_player1_dir").innerHTML = LEFT;
+					player1_dir = LEFT;
+					break;
+				case 68: //d - RIGHT
+					obj("label_player1_dir").innerHTML = RIGHT;
+					player1_dir = RIGHT;
+					break;
+				default:
+					obj("label_player1_dir").innerHTML = "others";
+					break;
+			}
+		}
+		
+		function draw_tron()
+		{
+			var x_offset = 0;
+			var y_offset = 0;
+			
+			switch(player1_dir)
+			{
+				case UP:
+					y_offset = -1;
+					break;
+				case DOWN:
+					y_offset = 1;
+					break;
+				case LEFT:
+					x_offset = -1;
+					break;
+				case RIGHT:
+					x_offset = 1;
+					break;
+				default:
+					break;
+			}
+			
+			ctx.strokeStyle = PLAYER1_COLOR;
+			ctx.lineWidth = LINE_WIDTH;
+			ctx.beginPath();
+				ctx.moveTo(player1_x, player1_y);
+				ctx.lineTo(player1_x + x_offset, player1_y + y_offset);
+				ctx.stroke();
+			ctx.closePath();
+			
+			player1_x += x_offset;
+			player1_y += y_offset;
+			
+		}
+		// macro functions
+		function obj(element_id)
+		{
+			return document.getElementById(element_id);
+		}
+	</script>
+</head>
+
+<body onload="init();">
+TRON
+	<label id="label_player1_dir"></label>
+	<label id="label_send_request_status"></label>
+	<div>
+		<canvas id="canvas_main" width=800 height=800></canvas>
+	</div>
+</body>
+
+</html>
